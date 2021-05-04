@@ -63,6 +63,26 @@ create table order_items
 insert into orders values(seq_order.nextval, 'mesa do careca', 'OPEN', sysdate);
 insert into order_items values(seq_order_items.nextval, 2, 8, 1, sysdate);
 
+update product
+set name = 'Kariri'
+where id_product = 3;
+
+update product
+set name = 'Brahma lata'
+where id_product = 7;
+
+update product
+set name = 'Skol garrafa'
+where id_product = 8;
+
+update product
+set name = '51'
+where id_product = 6;
+
+
+-- OK   Clicar em "adicionar mesa" cria um order no BD e devolve ID pra setar
+-- Carregar os produtos dinamicamente e setar o id nos options
+-- Criar fucao semelhante ao refhesValues(), porem para ir salvando o estado das orders no BD
 
 --1 tabela pro controle de comandas em aberta, e 1 de history
 --1 tabela pros clientes confianca

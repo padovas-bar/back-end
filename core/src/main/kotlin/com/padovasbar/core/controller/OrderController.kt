@@ -3,9 +3,11 @@ package com.padovasbar.core.controller
 import com.padovasbar.core.dto.OrderItemsResponseDTO
 import com.padovasbar.core.dto.OrderResponseDTO
 import com.padovasbar.core.model.Order
+import com.padovasbar.core.model.Status
 import com.padovasbar.core.repository.OrderItemRepository
 import com.padovasbar.core.repository.OrderRepository
 import com.padovasbar.core.repository.ProductRepository
+import java.time.LocalDateTime
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,7 +26,11 @@ class OrderController(private val orderRepository: OrderRepository,
 ) {
 
     @PostMapping
-    fun create(@RequestBody order: Order) = orderRepository.save(order)
+    fun create(@RequestBody order: Order): Order {
+        order.status = Status.OPEN
+        order.statusChangedAt = LocalDateTime.now()
+        return orderRepository.save(order)
+    }
 
     @GetMapping
     fun getAll(): MutableList<OrderResponseDTO> {
@@ -33,7 +39,7 @@ class OrderController(private val orderRepository: OrderRepository,
         val orders = orderRepository.findAll()
 
         for(order in orders){
-            val orderItems = orderItemRepository.findAllByOrderId(order.orderId)
+            val orderItems = orderItemRepository.findAllByOrderId(order.orderId!!)
             val orderItemsResponse = mutableListOf<OrderItemsResponseDTO>()
 
             for(item in orderItems){
@@ -41,7 +47,7 @@ class OrderController(private val orderRepository: OrderRepository,
                 orderItemsResponse.add(orderItemsResponseDTO)
             }
 
-            val orderResponseDTO = OrderResponseDTO(order.orderId, order.name, order.status, order.statusChangedAt, orderItemsResponse)
+            val orderResponseDTO = OrderResponseDTO(order.orderId, order.name, order.status!!, order.statusChangedAt!!, orderItemsResponse)
             response.add(orderResponseDTO)
         }
 
