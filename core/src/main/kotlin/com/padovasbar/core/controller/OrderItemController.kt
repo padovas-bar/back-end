@@ -28,12 +28,18 @@ class OrderItemController(private val orderRepository: OrderRepository,
 ) {
 
     @PatchMapping("/{id}")
-    fun create(@PathVariable id: Long, @RequestBody orderItemRequest: OrderItems): OrderItems {
+    fun update(@PathVariable id: Long, @RequestBody orderItemRequest: OrderItems): OrderItems {
         val orderItem = orderItemRepository.findById(id).get()
         orderItem.productId = orderItemRequest.productId ?: orderItem.productId
         orderItem.quantity = orderItemRequest.quantity ?: orderItem.quantity
 
         return orderItemRepository.save(orderItem)
+    }
+
+    @PostMapping()
+    fun create(@RequestBody orderItemRequest: OrderItems): OrderItems {
+        orderItemRequest.itemOrderedAt = LocalDateTime.now()
+        return orderItemRepository.save(orderItemRequest)
     }
 
 }

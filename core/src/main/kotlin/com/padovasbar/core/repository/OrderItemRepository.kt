@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface OrderItemRepository : CrudRepository<OrderItems, Long>{
-    fun findAllByOrderId(id: Long): MutableIterable<OrderItems>
+    fun findAllByOrderIdOrderByOrderItemIdAsc(id: Long): MutableIterable<OrderItems>
 }

@@ -23,13 +23,13 @@ data class OrderItems(
     @Column(name = "id_order", nullable = false)
     val orderId: Long?,
 
-    @Column(name = "id_product", nullable = false)
+    @Column(name = "id_product")
     var productId: Long?,
 
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "quantity")
     var quantity: String?,
 
     @Column(name = "item_ordered_at", nullable = false)
-    val itemOrderedAt: LocalDateTime?
+    var itemOrderedAt: LocalDateTime?
 
     )

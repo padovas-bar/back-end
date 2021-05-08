@@ -39,7 +39,7 @@ class OrderController(private val orderRepository: OrderRepository,
         val orders = orderRepository.findAll()
 
         for(order in orders){
-            val orderItems = orderItemRepository.findAllByOrderId(order.orderId!!)
+            val orderItems = orderItemRepository.findAllByOrderIdOrderByOrderItemIdAsc(order.orderId!!)
             val orderItemsResponse = mutableListOf<OrderItemsResponseDTO>()
 
             for(item in orderItems){
