@@ -18,18 +18,18 @@ data class OrderItems(
     @Id
     @GeneratedValue(generator = "seq_order_items")
     @Column(name = "id_order_item", nullable = false)
-    val orderItemId: Long,
+    val orderItemId: Long?,
 
     @Column(name = "id_order", nullable = false)
-    val orderId: Long,
+    val orderId: Long?,
 
     @Column(name = "id_product", nullable = false)
-    val productId: Long,
+    var productId: Long?,
 
     @Column(name = "quantity", nullable = false)
-    val quantity: String,
+    var quantity: String?,
 
     @Column(name = "item_ordered_at", nullable = false)
-    val itemOrderedAt: LocalDateTime
+    val itemOrderedAt: LocalDateTime?
 
     )

@@ -13,10 +13,10 @@ data class OrderResponseDTO (
     )
 
 data class OrderItemsResponseDTO (
-    val orderItemId: Long,
-    val orderId: Long,
-    val productId: Long,
-    val productName: String,
-    val quantity: String,
-    val itemOrderedAt: LocalDateTime
+    val orderItemId: Long?,
+    val orderId: Long?,
+    val productId: Long?,
+    val productName: String?,
+    val quantity: String?,
+    val itemOrderedAt: LocalDateTime?
     )

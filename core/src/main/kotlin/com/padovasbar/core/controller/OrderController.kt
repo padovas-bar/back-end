@@ -54,7 +54,8 @@ class OrderController(private val orderRepository: OrderRepository,
         return response
     }
 
-    fun getProductName(productId: Long) : String {
+    fun getProductName(productId: Long?) : String? {
+       if(productId == null) return null
        return productRepository.findById(productId).get().name
     }
 
