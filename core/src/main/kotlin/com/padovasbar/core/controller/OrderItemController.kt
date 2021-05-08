@@ -22,9 +22,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @CrossOrigin
 @RequestMapping("/order/item")
-class OrderItemController(private val orderRepository: OrderRepository,
-                          private val orderItemRepository: OrderItemRepository,
-                          private val productRepository: ProductRepository
+class OrderItemController(
+    private val orderItemRepository: OrderItemRepository
 ) {
 
     @PatchMapping("/{id}")
@@ -41,5 +40,8 @@ class OrderItemController(private val orderRepository: OrderRepository,
         orderItemRequest.itemOrderedAt = LocalDateTime.now()
         return orderItemRepository.save(orderItemRequest)
     }
+
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Long) = orderItemRepository.deleteById(id)
 
 }
