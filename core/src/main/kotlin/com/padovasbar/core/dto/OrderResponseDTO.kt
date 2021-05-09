@@ -8,7 +8,7 @@ data class OrderResponseDTO (
     val name: String,
     val status: Status,
     val statusChangedAt: LocalDateTime,
-    val orderItems: List<OrderItemsResponseDTO>?
+    var orderItems: List<OrderItemsResponseDTO>?
 
     )
 
@@ -16,7 +16,8 @@ data class OrderItemsResponseDTO (
     val orderItemId: Long?,
     val orderId: Long?,
     val productId: Long?,
-    val productName: String?,
+    var productName: String?,
+    var productPrice: Double?,
     val quantity: String?,
     val itemOrderedAt: LocalDateTime?
     )

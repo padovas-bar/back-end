@@ -7,6 +7,7 @@ import com.padovasbar.core.model.Status
 import com.padovasbar.core.repository.OrderItemRepository
 import com.padovasbar.core.repository.OrderRepository
 import com.padovasbar.core.repository.ProductRepository
+import java.lang.RuntimeException
 import java.time.LocalDateTime
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -43,7 +44,8 @@ class OrderController(private val orderRepository: OrderRepository,
             val orderItemsResponse = mutableListOf<OrderItemsResponseDTO>()
 
             for(item in orderItems){
-                val orderItemsResponseDTO = OrderItemsResponseDTO(item.orderItemId, item.orderId, item.productId, getProductName(item.productId), item.quantity, item.itemOrderedAt)
+                val orderItemsResponseDTO = OrderItemsResponseDTO(item.orderItemId, item.orderId, item.productId, null, null, item.quantity, item.itemOrderedAt)
+                getProductInfo(orderItemsResponseDTO)
                 orderItemsResponse.add(orderItemsResponseDTO)
             }
 
@@ -54,9 +56,31 @@ class OrderController(private val orderRepository: OrderRepository,
         return response
     }
 
-    fun getProductName(productId: Long?) : String? {
-       if(productId == null) return null
-       return productRepository.findById(productId).get().name
+    @GetMapping("/{id}")
+    fun getById(@PathVariable id: Long): OrderResponseDTO {
+        val order = orderRepository.findById(id).get()
+        val response = OrderResponseDTO(order.orderId!!, order.name, order.status!!, order.statusChangedAt!!, null)
+
+        val orderItems = orderItemRepository.findAllByOrderIdOrderByOrderItemIdAsc(id)
+        val orderItemsResponse = mutableListOf<OrderItemsResponseDTO>()
+
+        for(item in orderItems){
+            val orderItemsResponseDTO = OrderItemsResponseDTO(item.orderItemId, item.orderId, item.productId, null, null, item.quantity, item.itemOrderedAt)
+            getProductInfo(orderItemsResponseDTO)
+            orderItemsResponse.add(orderItemsResponseDTO)
+        }
+
+        response.orderItems = orderItemsResponse
+
+        return response
+    }
+
+    fun getProductInfo(orderItemsResponseDTO: OrderItemsResponseDTO) {
+        if(orderItemsResponseDTO.productId != null){
+            val product = productRepository.findById(orderItemsResponseDTO.productId).get()
+            orderItemsResponseDTO.productName = product.name
+            orderItemsResponseDTO.productPrice = product.price
+        }
     }
 
     @DeleteMapping("/{id}")
