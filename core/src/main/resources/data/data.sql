@@ -86,7 +86,7 @@ where id_product = 6;
 -- OK Testar se o adicionar comanda esta funcionado perfeitamente.
 -- Criar modal para o btnMinus, precisando confirmar a delecao.
 -- Atualizar o titulo das comnadas. tentar com focus.
--- Fechar order pode deletar a order direto caso nao haja itens.
+-- (OK porém o modal esta abrindo mesmo assim)Fechar order pode deletar a order direto caso nao haja itens.
 -- Criar o modal de fechar comanda
 -- Criar o modal de pendurar
 
