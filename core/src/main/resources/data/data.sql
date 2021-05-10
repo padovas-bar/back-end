@@ -115,10 +115,10 @@ where id_product = 6;
 
 
 -- Criar o modal de fechar comanda (botao confirmar)
--- 1 tabela pro controle de comandas em aberta, e 1 de history (migrar registros)
+-- 1 tabela pro controle de comandas em aberta, e 1 de history (migrar registros: order e partial_payment)
 
--- Criar modal para insercao de pagamento parcial ( botao pagamento parcial)
--- Criar tabela de partialPayements, a ser carregada no modal de fechar comanda
+-- OK Criar modal para insercao de pagamento parcial ( botao pagamento parcial)
+-- OK Criar tabela de partialPayements, a ser carregada no modal de fechar comanda
 
 -- Criar o modal de pendurar (verificar se vai pendurar tudo ou se ja abateram algo)
 -- 1 tabela pros clientes confianca (listar no modal)

@@ -7,6 +7,7 @@ import com.padovasbar.core.model.PartialPayment
 import com.padovasbar.core.repository.CategoryRepository
 import com.padovasbar.core.repository.PartialPaymentRepository
 import com.padovasbar.core.repository.ProductRepository
+import java.time.LocalDateTime
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -26,7 +27,10 @@ class PartialPaymentController(
     fun get(@PathVariable id: Long) = partialPaymentRepository.findAllByOrderIdOrderByOrderIdAsc(id)
 
     @PostMapping
-    fun create(@RequestBody partialPayment: PartialPayment) = partialPaymentRepository.save(partialPayment)
+    fun create(@RequestBody partialPayment: PartialPayment): PartialPayment {
+        partialPayment.paidAt = LocalDateTime.now()
+        return partialPaymentRepository.save(partialPayment)
+    }
 
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long) = partialPaymentRepository.deleteById(id)

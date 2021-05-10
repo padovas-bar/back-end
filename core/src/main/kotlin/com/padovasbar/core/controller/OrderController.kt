@@ -72,7 +72,6 @@ class OrderController(private val orderRepository: OrderRepository,
         }
 
         response.orderItems = orderItemsResponse
-        println(response)
         return response
     }
 

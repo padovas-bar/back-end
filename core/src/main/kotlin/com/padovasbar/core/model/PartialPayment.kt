@@ -12,7 +12,7 @@ import javax.persistence.Table
 data class PartialPayment(
 
     @Id
-    @GeneratedValue(generator = "seq_partial_payemnt")
+    @GeneratedValue(generator = "seq_partial_payment")
     @Column(name = "id_partial_payment", nullable = false)
     val partialPaymentId: Long?,
 
