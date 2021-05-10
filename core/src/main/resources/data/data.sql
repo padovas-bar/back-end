@@ -83,17 +83,20 @@ where id_product = 6;
 
 
 
--- OK Testar se o adicionar comanda esta funcionado perfeitamente.
--- Criar modal para o btnMinus, precisando confirmar a delecao.
--- Atualizar o titulo das comnadas. tentar com focus.
--- (OK porém o modal esta abrindo mesmo assim)Fechar order pode deletar a order direto caso nao haja itens.
--- Criar o modal de fechar comanda
--- Criar o modal de pendurar
+-- Criar o modal de fechar comanda (botao confirmar)
+-- 1 tabela pro controle de comandas em aberta, e 1 de history (migrar registros)
 
---1 tabela pro controle de comandas em aberta, e 1 de history
---1 tabela pros clientes confianca
---scheduler pra mandar dump da base via email 3x ao dia
---criar menu dos pendurados
+-- Criar modal para insercao de pagamento parcial ( botao pagamento parcial)
+-- Criar tabela de partialPayements, a ser carregada no modal de fechar comanda
+
+
+-- Criar o modal de pendurar (verificar se vai pendurar tudo ou se ja abateram algo)
+-- 1 tabela pros clientes confianca (listar no modal)
+-- criar menu pro cadastro dos pendurados
+-- criar menu pra consulta da relacao do que e quem esta pendurado
+
+-- scheduler pra mandar dump da base via email 3x ao dia
+
 
 
 CREATE TABLE BLOG (
