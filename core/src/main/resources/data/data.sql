@@ -9,6 +9,9 @@ from orders;
 select *
 from order_items;
 select * from partial_payment;
+select * from orders_history;
+select * from order_items_history;
+select * from partial_payment_history;
 
 CREATE SEQUENCE seq_category
     MINVALUE 1
@@ -84,6 +87,36 @@ create table partial_payment
     CONSTRAINT fk_order_2 FOREIGN KEY (id_order) REFERENCES orders (id_order)
 );
 
+create table orders_history
+(
+    id_order_history  number(10) primary key,
+    name              varchar2(100),
+    status            varchar2(20),
+    status_changed_at date,
+    total_value       number(10, 2)
+);
+
+create table order_items_history
+(
+    id_order_item_history   number(10) primary key,
+    id_order_history        number(10),
+    name            varchar2(100),
+    price           number(10, 2),
+    quantity        number(2),
+    item_ordered_at date,
+    CONSTRAINT fk_order_history FOREIGN KEY (id_order_history) REFERENCES orders_history (id_order_history)
+);
+
+create table partial_payment_history
+(
+    id_partial_payment_history number(10) primary key,
+    id_order_history           number(10),
+    description        varchar2(100),
+    value              number(10, 2),
+    paid_at            date,
+    CONSTRAINT fk_order_history_2 FOREIGN KEY (id_order_history) REFERENCES orders_history (id_order_history)
+);
+
 
 insert into orders
 values (seq_order.nextval, 'mesa do careca', 'OPEN', sysdate);
@@ -114,8 +147,8 @@ where id_product = 6;
 
 
 
--- Criar o modal de fechar comanda (botao confirmar)
--- 1 tabela pro controle de comandas em aberta, e 1 de history (migrar registros: order e partial_payment)
+-- OK Criar o modal de fechar comanda (botao confirmar)
+-- OK 1 tabela pro controle de comandas em aberta, e 1 de history (migrar registros: order e partial_payment)
 
 -- OK Criar modal para insercao de pagamento parcial ( botao pagamento parcial)
 -- OK Criar tabela de partialPayements, a ser carregada no modal de fechar comanda
