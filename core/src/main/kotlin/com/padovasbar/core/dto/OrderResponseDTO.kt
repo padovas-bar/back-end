@@ -18,6 +18,6 @@ data class OrderItemsResponseDTO (
     val productId: Long?,
     var productName: String?,
     var productPrice: Double?,
-    val quantity: String?,
+    val quantity: Long?,
     val itemOrderedAt: LocalDateTime?
     )

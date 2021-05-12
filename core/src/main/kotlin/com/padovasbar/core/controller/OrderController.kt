@@ -2,13 +2,22 @@ package com.padovasbar.core.controller
 
 import com.padovasbar.core.dto.OrderItemsResponseDTO
 import com.padovasbar.core.dto.OrderResponseDTO
+import com.padovasbar.core.dto.Resume
 import com.padovasbar.core.model.Order
+import com.padovasbar.core.model.OrderHistory
+import com.padovasbar.core.model.OrderItemsHistory
+import com.padovasbar.core.model.PartialPaymentHistory
 import com.padovasbar.core.model.Status
+import com.padovasbar.core.repository.OrderHistoryRepository
+import com.padovasbar.core.repository.OrderItemHistoryRepository
 import com.padovasbar.core.repository.OrderItemRepository
 import com.padovasbar.core.repository.OrderRepository
+import com.padovasbar.core.repository.PartialPaymentHistoryRepository
+import com.padovasbar.core.repository.PartialPaymentRepository
 import com.padovasbar.core.repository.ProductRepository
 import java.lang.RuntimeException
 import java.time.LocalDateTime
+import javax.transaction.Transactional
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,7 +33,11 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/order")
 class OrderController(private val orderRepository: OrderRepository,
                       private val orderItemRepository: OrderItemRepository,
-                      private val productRepository: ProductRepository
+                      private val productRepository: ProductRepository,
+                      private val orderHistoryRepository: OrderHistoryRepository,
+                      private val orderItemHistoryRepository: OrderItemHistoryRepository,
+                      private val partialPaymentRepository: PartialPaymentRepository,
+                      private val partialPaymentHistoryRepository: PartialPaymentHistoryRepository
 ) {
 
     @PostMapping
@@ -92,5 +105,39 @@ class OrderController(private val orderRepository: OrderRepository,
         order.name = orderRequest.name
         return orderRepository.save(order)
     }
+
+    @Transactional
+    @PatchMapping("/{id}/close")
+    fun closeOrder(@PathVariable id: Long, @RequestBody resume: Resume) {
+        val payments = partialPaymentRepository.findAllByOrderIdOrderByOrderIdAsc(id)
+        val items = orderItemRepository.findAllByOrderIdOrderByOrderItemIdAsc(id)
+        val order = orderRepository.findById(id).get()
+
+        val orderHistory = OrderHistory(order.orderId, order.name, Status.CLOSED, LocalDateTime.now(), resume.total)
+
+        val itemsHistory = mutableListOf<OrderItemsHistory>()
+        for(item in items){
+            val product = productRepository.findById(item.productId!!).get()
+            itemsHistory.add(
+                OrderItemsHistory(item.orderItemId, item.orderId, product.name, product.price, item.quantity, item.itemOrderedAt)
+            )
+        }
+
+        val partialPayments = mutableListOf<PartialPaymentHistory>()
+        for(payment in payments){
+            partialPayments.add(
+                PartialPaymentHistory(payment.partialPaymentId, payment.orderId, payment.description, payment.value, payment.paidAt)
+            )
+        }
+
+        orderHistoryRepository.save(orderHistory)
+        orderItemHistoryRepository.saveAll(itemsHistory)
+        partialPaymentHistoryRepository.saveAll(partialPayments)
+
+        partialPaymentRepository.deleteAllByOrderId(id)
+        orderItemRepository.deleteAllByOrderId(id)
+        orderRepository.deleteById(id)
+    }
+
 
 }

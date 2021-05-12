@@ -13,18 +13,20 @@ import javax.persistence.Table
 
 @Entity
 @Table
-data class OrderItems(
+data class OrderItemsHistory(
 
     @Id
-    @GeneratedValue(generator = "seq_order_items")
-    @Column(name = "id_order_item", nullable = false)
-    val orderItemId: Long?,
+    @Column(name = "id_order_item_history", nullable = false)
+    val orderItemHistoryId: Long?,
 
-    @Column(name = "id_order", nullable = false)
-    val orderId: Long?,
+    @Column(name = "id_order_history", nullable = false)
+    val orderHistoryId: Long?,
 
-    @Column(name = "id_product")
-    var productId: Long?,
+    @Column(name = "name")
+    var name: String?,
+
+    @Column(name = "price")
+    var price: Double?,
 
     @Column(name = "quantity")
     var quantity: Long?,
