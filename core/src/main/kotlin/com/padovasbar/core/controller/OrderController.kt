@@ -139,5 +139,14 @@ class OrderController(private val orderRepository: OrderRepository,
         orderRepository.deleteById(id)
     }
 
+    @PatchMapping("/{id}/hang")
+    fun hangOrder(@PathVariable id: Long, @RequestBody resume: Resume): Order {
+        val order = orderRepository.findById(id).get()
+        order.status = Status.PENDENT
+        order.statusChangedAt = LocalDateTime.now()
+        order.pendentOwner = resume.trustedClientId
+        return orderRepository.save(order)
+    }
+
 
 }

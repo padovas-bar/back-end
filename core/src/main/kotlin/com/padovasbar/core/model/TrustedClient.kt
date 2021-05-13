@@ -19,6 +19,6 @@ data class TrustedClient(
     val name: String,
 
     @Column(name = "description")
-    val description: String,
+    val description: String?,
 
     )

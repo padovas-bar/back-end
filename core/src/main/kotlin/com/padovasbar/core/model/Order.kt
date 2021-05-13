@@ -30,4 +30,7 @@ data class Order(
     @Column(name = "status_changed_at", nullable = false)
     var statusChangedAt: LocalDateTime?,
 
+    @Column(name = "pendent_owner")
+    var pendentOwner: Long?
+
     )
