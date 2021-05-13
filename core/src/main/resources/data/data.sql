@@ -117,6 +117,18 @@ create table partial_payment_history
     CONSTRAINT fk_order_history_2 FOREIGN KEY (id_order_history) REFERENCES orders_history (id_order_history)
 );
 
+CREATE SEQUENCE seq_trusted_client
+    MINVALUE 1
+    MAXVALUE 999999999999
+    START WITH 1
+    INCREMENT BY 1;
+
+create table trusted_client
+(
+    id_trusted_client number(10) primary key,
+    name               varchar2(100),
+    description        varchar2(1000)
+);
 
 insert into orders
 values (seq_order.nextval, 'mesa do careca', 'OPEN', sysdate);
@@ -146,17 +158,13 @@ set name = '51'
 where id_product = 6;
 
 
+-- Botao Pendurar vai pra dentro do modal de fechar comanda
+-- Criar tela pro CRUD do cliente confiança (tabela e repositorio)
+-- Criar o modal de pendurar (lista os clientes confiancas, seleciona e escolhe)
+-- Criar tela com uma tabela no front, listando as comandas penduradas e botao para
+-- liquidar elas, onde abrirá o modal "fechar comanda" já herdando as funcionalidads
 
--- OK Criar o modal de fechar comanda (botao confirmar)
--- OK 1 tabela pro controle de comandas em aberta, e 1 de history (migrar registros: order e partial_payment)
 
--- OK Criar modal para insercao de pagamento parcial ( botao pagamento parcial)
--- OK Criar tabela de partialPayements, a ser carregada no modal de fechar comanda
-
--- Criar o modal de pendurar (verificar se vai pendurar tudo ou se ja abateram algo)
--- 1 tabela pros clientes confianca (listar no modal)
--- criar menu pro cadastro dos pendurados
--- criar menu pra consulta da relacao do que e quem esta pendurado
 
 -- scheduler pra mandar dump da base via email 3x ao dia
 
