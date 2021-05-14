@@ -32,4 +32,7 @@ data class OrderHistory(
     @Column(name = "total_value", nullable = false)
     var totalValue: Double?,
 
+    @Column(name = "pendent_owner")
+    var pendentOwner: String?
+
     )

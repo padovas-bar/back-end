@@ -13,8 +13,4 @@ interface OrderRepository : CrudRepository<Order, Long>{
         nativeQuery = true)
     override fun findAll(): MutableIterable<Order>
 
-    @Query(
-        value = "SELECT * FROM orders where status = 'PENDENT' order by id_order",
-        nativeQuery = true)
-    fun findAllPendents(): MutableIterable<Order>
 }

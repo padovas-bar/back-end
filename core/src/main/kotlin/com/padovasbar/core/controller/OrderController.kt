@@ -2,6 +2,7 @@ package com.padovasbar.core.controller
 
 import com.padovasbar.core.dto.OrderItemsResponseDTO
 import com.padovasbar.core.dto.OrderResponseDTO
+import com.padovasbar.core.dto.PendentOrderResponseDTO
 import com.padovasbar.core.dto.Resume
 import com.padovasbar.core.model.Order
 import com.padovasbar.core.model.OrderHistory
@@ -15,7 +16,7 @@ import com.padovasbar.core.repository.OrderRepository
 import com.padovasbar.core.repository.PartialPaymentHistoryRepository
 import com.padovasbar.core.repository.PartialPaymentRepository
 import com.padovasbar.core.repository.ProductRepository
-import java.lang.RuntimeException
+import com.padovasbar.core.repository.TrustedClientRepository
 import java.time.LocalDateTime
 import javax.transaction.Transactional
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -37,7 +38,8 @@ class OrderController(private val orderRepository: OrderRepository,
                       private val orderHistoryRepository: OrderHistoryRepository,
                       private val orderItemHistoryRepository: OrderItemHistoryRepository,
                       private val partialPaymentRepository: PartialPaymentRepository,
-                      private val partialPaymentHistoryRepository: PartialPaymentHistoryRepository
+                      private val partialPaymentHistoryRepository: PartialPaymentHistoryRepository,
+                      private val trustedClientRepository: TrustedClientRepository
 ) {
 
     @PostMapping
@@ -113,7 +115,7 @@ class OrderController(private val orderRepository: OrderRepository,
         val items = orderItemRepository.findAllByOrderIdOrderByOrderItemIdAsc(id)
         val order = orderRepository.findById(id).get()
 
-        val orderHistory = OrderHistory(order.orderId, order.name, Status.CLOSED, LocalDateTime.now(), resume.total)
+        val orderHistory = OrderHistory(order.orderId, order.name, if(resume.trustedClientName == null) Status.CLOSED else Status.PENDENT, LocalDateTime.now(), resume.total, resume.trustedClientName)
 
         val itemsHistory = mutableListOf<OrderItemsHistory>()
         for(item in items){
@@ -139,14 +141,27 @@ class OrderController(private val orderRepository: OrderRepository,
         orderRepository.deleteById(id)
     }
 
-    @PatchMapping("/{id}/hang")
-    fun hangOrder(@PathVariable id: Long, @RequestBody resume: Resume): Order {
-        val order = orderRepository.findById(id).get()
-        order.status = Status.PENDENT
-        order.statusChangedAt = LocalDateTime.now()
-        order.pendentOwner = resume.trustedClientId
-        return orderRepository.save(order)
+    @GetMapping("/pendent")
+    fun getPendentOrders(): MutableList<PendentOrderResponseDTO> {
+        val pendentOrders = orderHistoryRepository.findAllPendents()
+
+        val response = mutableListOf<PendentOrderResponseDTO>()
+        for(order in pendentOrders){
+            val pendentOrder = PendentOrderResponseDTO(order.orderHistoryId, order.name, order.status, order.statusChangedAt, order.totalValue, order.pendentOwner, null, null)
+            response.add(pendentOrder)
+        }
+
+        for(order in response){
+            var partialPaymentValue = 0.0
+            val partialPayments =
+                partialPaymentHistoryRepository.findAllByOrderHistoryId(order.orderHistoryId!!)
+                    .forEach { a-> partialPaymentValue += a.value }
+            order.partialPaidValue = partialPaymentValue
+            order.totalValue = order.totalValue?.plus(order.partialPaidValue?:0.0)
+            order.remainingValue = order.totalValue?.minus(order.partialPaidValue?:0.0)
+        }
+
+        return response
+
     }
-
-
 }
