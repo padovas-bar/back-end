@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface PartialPaymentHistoryRepository : CrudRepository<PartialPaymentHistory, Long>{
     fun findAllByOrderHistoryId(id: Long): MutableIterable<PartialPaymentHistory>
+    fun findAllByOrderHistoryIdOrderByOrderHistoryIdAsc(id: Long): MutableIterable<PartialPaymentHistory>
 }

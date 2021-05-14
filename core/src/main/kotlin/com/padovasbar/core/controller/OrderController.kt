@@ -92,6 +92,23 @@ class OrderController(private val orderRepository: OrderRepository,
         return response
     }
 
+    @GetMapping("/history/{id}")
+    fun getByIdHistory(@PathVariable id: Long): OrderResponseDTO {
+        val order = orderHistoryRepository.findById(id).get()
+        val response = OrderResponseDTO(order.orderHistoryId!!, order.name, order.status!!, order.statusChangedAt!!, null)
+
+        val orderItems = orderItemHistoryRepository.findAllByOrderHistoryIdOrderByOrderItemHistoryIdAsc(id)
+        val orderItemsResponse = mutableListOf<OrderItemsResponseDTO>()
+
+        for(item in orderItems){
+            val orderItemsResponseDTO = OrderItemsResponseDTO(item.orderItemHistoryId, item.orderHistoryId, 0, item.name, item.price, item.quantity, item.itemOrderedAt)
+            orderItemsResponse.add(orderItemsResponseDTO)
+        }
+
+        response.orderItems = orderItemsResponse
+        return response
+    }
+
     fun getProductInfo(orderItemsResponseDTO: OrderItemsResponseDTO) {
         if(orderItemsResponseDTO.productId != null){
             val product = productRepository.findById(orderItemsResponseDTO.productId).get()
@@ -141,6 +158,15 @@ class OrderController(private val orderRepository: OrderRepository,
         partialPaymentRepository.deleteAllByOrderId(id)
         orderItemRepository.deleteAllByOrderId(id)
         orderRepository.deleteById(id)
+    }
+
+    @PatchMapping("/{id}/close/history")
+    fun closeOrderHistory(@PathVariable id: Long, @RequestBody resume: Resume) {
+        val orderHistory = orderHistoryRepository.findById(id).get()
+        orderHistory.totalValue = resume.total
+        orderHistory.status = Status.CLOSED
+        orderHistory.statusChangedAt = LocalDateTime.now()
+        orderHistoryRepository.save(orderHistory)
     }
 
     @GetMapping("/pendent")

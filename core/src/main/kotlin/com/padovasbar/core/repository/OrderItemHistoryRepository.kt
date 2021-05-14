@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface OrderItemHistoryRepository : CrudRepository<OrderItemsHistory, Long>{
+    fun findAllByOrderHistoryIdOrderByOrderItemHistoryIdAsc(id: Long): MutableIterable<OrderItemsHistory>
 }

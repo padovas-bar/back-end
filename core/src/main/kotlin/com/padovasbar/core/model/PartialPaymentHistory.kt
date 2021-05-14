@@ -12,6 +12,7 @@ import javax.persistence.Table
 data class PartialPaymentHistory(
 
     @Id
+    @GeneratedValue(generator = "seq_partial_payment")
     @Column(name = "id_partial_payment_history", nullable = false)
     val partialPaymentHistoryId: Long?,
 
