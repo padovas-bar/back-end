@@ -163,7 +163,6 @@ class OrderController(private val orderRepository: OrderRepository,
     @PatchMapping("/{id}/close/history")
     fun closeOrderHistory(@PathVariable id: Long, @RequestBody resume: Resume) {
         val orderHistory = orderHistoryRepository.findById(id).get()
-        orderHistory.totalValue = resume.total
         orderHistory.status = Status.CLOSED
         orderHistory.statusChangedAt = LocalDateTime.now()
         orderHistoryRepository.save(orderHistory)
@@ -179,19 +178,17 @@ class OrderController(private val orderRepository: OrderRepository,
             response.add(pendentOrder)
         }
 
-
-
         for(order in response){
             var partialPaymentValue = 0.0
             val partialPayments =
                 partialPaymentHistoryRepository.findAllByOrderHistoryId(order.orderHistoryId!!)
                     .forEach { a-> partialPaymentValue += a.value }
             order.partialPaidValue = partialPaymentValue
-            order.totalValue = order.totalValue?.plus(order.partialPaidValue?:0.0)
+            order.totalValue = order.totalValue
             order.remainingValue = order.totalValue?.minus(order.partialPaidValue?:0.0)
         }
 
         return response
-
     }
+
 }
