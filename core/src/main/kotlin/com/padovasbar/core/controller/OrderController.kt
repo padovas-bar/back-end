@@ -18,6 +18,7 @@ import com.padovasbar.core.repository.PartialPaymentRepository
 import com.padovasbar.core.repository.ProductRepository
 import com.padovasbar.core.repository.TrustedClientRepository
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.transaction.Transactional
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+
 
 @RestController
 @CrossOrigin
@@ -147,9 +149,11 @@ class OrderController(private val orderRepository: OrderRepository,
 
         val response = mutableListOf<PendentOrderResponseDTO>()
         for(order in pendentOrders){
-            val pendentOrder = PendentOrderResponseDTO(order.orderHistoryId, order.name, order.status, order.statusChangedAt, order.totalValue, order.pendentOwner, null, null)
+            val pendentOrder = PendentOrderResponseDTO(order.orderHistoryId, order.name, order.status, order.statusChangedAt!!.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), order.totalValue, order.pendentOwner, null, null)
             response.add(pendentOrder)
         }
+
+
 
         for(order in response){
             var partialPaymentValue = 0.0

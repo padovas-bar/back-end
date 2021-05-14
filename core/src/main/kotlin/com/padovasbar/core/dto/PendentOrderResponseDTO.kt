@@ -10,7 +10,7 @@ data class PendentOrderResponseDTO (
     val orderHistoryId: Long?,
     var name: String,
     var status: Status?,
-    var statusChangedAt: LocalDateTime?,
+    var statusChangedAt: String?,
     var totalValue: Double?,
     var pendentOwner: String?,
     var partialPaidValue: Double?,
