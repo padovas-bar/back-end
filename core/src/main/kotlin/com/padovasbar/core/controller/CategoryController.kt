@@ -33,7 +33,7 @@ class CategoryController(
             val categoryResponse = CategoryResponseDTO(category.categoryId, category.name, mutableListOf<ProductResponseDTO>())
 
             for(product in productRepository.findAllByCategoryId(categoryResponse.categoryId!!)){
-                val productResponse = ProductResponseDTO(product.productId!!, product.categoryId!!, product.name, product.price)
+                val productResponse = ProductResponseDTO(product.productId!!, product.categoryId!!, null, product.name, product.price)
                 categoryResponse.products?.add(productResponse)
             }
 

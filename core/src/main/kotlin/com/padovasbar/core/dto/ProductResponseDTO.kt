@@ -9,6 +9,7 @@ data class CategoryResponseDTO(
 data class ProductResponseDTO(
     val productId: Long,
     val categoryId: Long,
+    val categoryName: String?,
     val name: String,
     val price: Double
 )
