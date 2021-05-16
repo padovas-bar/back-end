@@ -33,6 +33,9 @@ data class OrderHistory(
     var totalValue: Double?,
 
     @Column(name = "pendent_owner")
-    var pendentOwner: String?
+    var pendentOwner: String?,
+
+    @Column(name = "payment_type")
+    var paymentType: PaymentType?
 
     )

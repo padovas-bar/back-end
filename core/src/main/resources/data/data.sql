@@ -12,6 +12,7 @@ select * from partial_payment;
 select * from orders_history;
 select * from order_items_history;
 select * from partial_payment_history;
+select * from trusted_client;
 
 CREATE SEQUENCE seq_category
     MINVALUE 1
@@ -51,7 +52,8 @@ create table orders
     id_order          number(10) primary key,
     name              varchar2(100),
     status            varchar2(20),
-    status_changed_at date
+    status_changed_at date,
+    payment_type varchar2(20)
 );
 
 CREATE SEQUENCE seq_order_items
@@ -84,6 +86,7 @@ create table partial_payment
     description        varchar2(100),
     value              number(10, 2),
     paid_at            date,
+    payment_type varchar2(20),
     CONSTRAINT fk_order_2 FOREIGN KEY (id_order) REFERENCES orders (id_order)
 );
 
@@ -93,7 +96,10 @@ create table orders_history
     name              varchar2(100),
     status            varchar2(20),
     status_changed_at date,
-    total_value       number(10, 2)
+    total_value       number(10, 2),
+    pendent_owner     number(10),
+    payment_type varchar2(20),
+    CONSTRAINT pendent_owner FOREIGN KEY (pendent_owner) REFERENCES trusted_client (id_trusted_client)
 );
 
 create table order_items_history
@@ -114,6 +120,7 @@ create table partial_payment_history
     description        varchar2(100),
     value              number(10, 2),
     paid_at            date,
+    payment_type varchar2(20),
     CONSTRAINT fk_order_history_2 FOREIGN KEY (id_order_history) REFERENCES orders_history (id_order_history)
 );
 
@@ -158,13 +165,11 @@ set name = '51'
 where id_product = 6;
 
 
--- Botao Pendurar vai pra dentro do modal de fechar comanda
--- Criar tela pro CRUD do cliente confiança (tabela e repositorio)
--- Criar o modal de pendurar (lista os clientes confiancas, seleciona e escolhe)
--- Criar tela com uma tabela no front, listando as comandas penduradas e botao para
--- liquidar elas, onde abrirá o modal "fechar comanda" já herdando as funcionalidads
-
-
+-- OK remover comanda fixa
+-- OK produtos mostrando nome da categoria ao inves do ID
+-- OK bug do valor na tela de pendurados
+-- botao onde o cliente paga 1 valor e ele vai amortizado as ultimas comnandas
+-- Marcar se o pagamento foi feito com CC ou dinheiro
 
 -- scheduler pra mandar dump da base via email 3x ao dia
 

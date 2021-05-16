@@ -134,7 +134,7 @@ class OrderController(private val orderRepository: OrderRepository,
         val items = orderItemRepository.findAllByOrderIdOrderByOrderItemIdAsc(id)
         val order = orderRepository.findById(id).get()
 
-        val orderHistory = OrderHistory(order.orderId, order.name, if(resume.trustedClientName == null) Status.CLOSED else Status.PENDENT, LocalDateTime.now(), resume.total, resume.trustedClientName)
+        val orderHistory = OrderHistory(order.orderId, order.name, if(resume.trustedClientName == null) Status.CLOSED else Status.PENDENT, LocalDateTime.now(), resume.total, resume.trustedClientName, order.paymentType)
 
         val itemsHistory = mutableListOf<OrderItemsHistory>()
         for(item in items){
@@ -147,7 +147,7 @@ class OrderController(private val orderRepository: OrderRepository,
         val partialPayments = mutableListOf<PartialPaymentHistory>()
         for(payment in payments){
             partialPayments.add(
-                PartialPaymentHistory(payment.partialPaymentId, payment.orderId, payment.description, payment.value, payment.paidAt)
+                PartialPaymentHistory(payment.partialPaymentId, payment.orderId, payment.description, payment.value, payment.paidAt, payment.paymentType)
             )
         }
 

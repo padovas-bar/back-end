@@ -26,6 +26,9 @@ data class PartialPaymentHistory(
     val value: Double,
 
     @Column(name = "paid_at", nullable = false)
-    var paidAt: LocalDateTime?
+    var paidAt: LocalDateTime?,
+
+    @Column(name = "payment_type")
+    var paymentType: PaymentType?
 
     )

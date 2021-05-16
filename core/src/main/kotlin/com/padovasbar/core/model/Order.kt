@@ -28,6 +28,9 @@ data class Order(
     var status: Status?,
 
     @Column(name = "status_changed_at", nullable = false)
-    var statusChangedAt: LocalDateTime?
+    var statusChangedAt: LocalDateTime?,
+
+    @Column(name = "payment_type")
+    var paymentType: PaymentType?
 
     )
