@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -23,8 +24,20 @@ class TrustedClientController(private val trustedClientRepository: TrustedClient
     @PostMapping
     fun create(@RequestBody trustedClient: TrustedClient) = trustedClientRepository.save(trustedClient)
 
+    @GetMapping("/{id}")
+    fun getById(@PathVariable id: Long) = trustedClientRepository.findById(id)
+
     @GetMapping
     fun getAll() = trustedClientRepository.findAll()
+
+    @PutMapping("/{id}")
+    fun update(@PathVariable id: Long, @RequestBody trustedClient: TrustedClient): TrustedClient {
+        val client = trustedClientRepository.findById(id).get()
+        client.name = trustedClient.name
+        client.description = trustedClient.description
+
+        return trustedClientRepository.save(client)
+    }
 
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long) = trustedClientRepository.deleteById(id)

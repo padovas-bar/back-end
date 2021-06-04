@@ -16,9 +16,9 @@ data class TrustedClient(
     val trustedClientId: Long?,
 
     @Column(name = "name", nullable = false)
-    val name: String,
+    var name: String,
 
     @Column(name = "description")
-    val description: String?,
+    var description: String?,
 
     )
