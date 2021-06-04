@@ -1,5 +1,5 @@
 package com.padovasbar.core.model
 
 enum class PaymentType {
-    DINHEIRO, CARTAO_DEBITO, CARTAO_CREDITO
+    CASH, CREDIT_CARD, DEBIT_CARD
 }

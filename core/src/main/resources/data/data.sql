@@ -52,8 +52,7 @@ create table orders
     id_order          number(10) primary key,
     name              varchar2(100),
     status            varchar2(20),
-    status_changed_at date,
-    payment_type varchar2(20)
+    status_changed_at date
 );
 
 CREATE SEQUENCE seq_order_items
@@ -171,10 +170,11 @@ where id_product = 6;
 -- scheduler pra mandar dump da base via email 3x ao dia
 
 -- OK Produtos: quando add um produto, a categoria fica o numero nao o nome
---Comandas: precisar ter px fixos para nao encolher no monitor menor
+-- OK Comandas: precisar ter px fixos para nao encolher no monitor menor
 --Clientes: no Pc do bar, quando ia adicionar um clinte dava erro de invalid humber e nao adicionada. testar sem massa.
 -- OK Impl. editar categoria
 -- OK Impl. editar produtos
---Impl. editar cliente
+-- OK Impl. editar cliente
 --Criar relatorio de gastos dos dias anteiores.
---Deletar em cascata (add mensagem on error. categoria > produto. produto > comanda)
+-- OK Deletar em cascata (add mensagem on error. categoria > produto. produto > comanda)
+--Comanda precisa ter um campo livre

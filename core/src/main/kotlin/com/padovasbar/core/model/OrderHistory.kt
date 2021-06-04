@@ -36,6 +36,7 @@ data class OrderHistory(
     var pendentOwner: String?,
 
     @Column(name = "payment_type")
+    @Enumerated(value = EnumType.STRING)
     var paymentType: PaymentType?
 
     )

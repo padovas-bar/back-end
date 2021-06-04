@@ -134,7 +134,7 @@ class OrderController(private val orderRepository: OrderRepository,
         val items = orderItemRepository.findAllByOrderIdOrderByOrderItemIdAsc(id)
         val order = orderRepository.findById(id).get()
 
-        val orderHistory = OrderHistory(order.orderId, order.name, if(resume.trustedClientName == null) Status.CLOSED else Status.PENDENT, LocalDateTime.now(), resume.total, resume.trustedClientName, order.paymentType)
+        val orderHistory = OrderHistory(order.orderId, order.name, if(resume.trustedClientName == null) Status.CLOSED else Status.PENDENT, LocalDateTime.now(), resume.total, resume.trustedClientName, resume.paymentType)
 
         val itemsHistory = mutableListOf<OrderItemsHistory>()
         for(item in items){
