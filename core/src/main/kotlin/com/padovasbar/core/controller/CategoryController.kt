@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -24,6 +25,9 @@ class CategoryController(
 
     @PostMapping
     fun create(@RequestBody category: Category) = categoryRepository.save(category)
+
+    @GetMapping("/{id}")
+    fun getById(@PathVariable id: Long) = categoryRepository.findById(id)
 
     @GetMapping
     fun getAll() : MutableList<CategoryResponseDTO>{
@@ -41,6 +45,13 @@ class CategoryController(
         }
 
         return response
+    }
+
+    @PutMapping("/{id}")
+    fun update(@PathVariable id: Long, @RequestBody category: Category): Category {
+        val savedCategory = categoryRepository.findById(id).get()
+        savedCategory.name = category.name
+        return categoryRepository.save(savedCategory)
     }
 
     @DeleteMapping("/{id}")

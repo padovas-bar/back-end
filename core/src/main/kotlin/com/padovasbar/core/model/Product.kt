@@ -16,12 +16,12 @@ data class Product(
     val productId: Long?,
 
     @Column(name = "id_category", nullable = false)
-    val categoryId: Long?,
+    var categoryId: Long?,
 
     @Column(name = "name", nullable = false)
-    val name: String,
+    var name: String,
 
     @Column(name = "price", nullable = false)
-    val price: Double
+    var price: Double
 
     )

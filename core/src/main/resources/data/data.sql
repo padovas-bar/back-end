@@ -136,7 +136,7 @@ create table trusted_client
     name               varchar2(100),
     description        varchar2(1000)
 );
-
+d
 insert into orders
 values (seq_order.nextval, 'mesa do careca', 'OPEN', sysdate);
 insert into order_items
@@ -165,11 +165,16 @@ set name = '51'
 where id_product = 6;
 
 
--- OK remover comanda fixa
--- OK produtos mostrando nome da categoria ao inves do ID
--- OK bug do valor na tela de pendurados
 -- botao onde o cliente paga 1 valor e ele vai amortizado as ultimas comnandas
 -- Marcar se o pagamento foi feito com CC ou dinheiro
 
 -- scheduler pra mandar dump da base via email 3x ao dia
 
+-- OK Produtos: quando add um produto, a categoria fica o numero nao o nome
+--Comandas: precisar ter px fixos para nao encolher no monitor menor
+--Clientes: no Pc do bar, quando ia adicionar um clinte dava erro de invalid humber e nao adicionada. testar sem massa.
+-- OK Impl. editar categoria
+-- OK Impl. editar produtos
+--Impl. editar cliente
+--Criar relatorio de gastos dos dias anteiores.
+--Deletar em cascata (add mensagem on error. categoria > produto. produto > comanda)
