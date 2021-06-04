@@ -165,7 +165,7 @@ where id_product = 6;
 
 
 -- botao onde o cliente paga 1 valor e ele vai amortizado as ultimas comnandas
--- Marcar se o pagamento foi feito com CC ou dinheiro
+-- OK Marcar se o pagamento foi feito com CC ou dinheiro
 
 -- scheduler pra mandar dump da base via email 3x ao dia
 
@@ -177,4 +177,4 @@ where id_product = 6;
 -- OK Impl. editar cliente
 --Criar relatorio de gastos dos dias anteiores.
 -- OK Deletar em cascata (add mensagem on error. categoria > produto. produto > comanda)
---Comanda precisa ter um campo livre
+--Comanda precisa ter um campo livre / alguma forma de inserir desconto

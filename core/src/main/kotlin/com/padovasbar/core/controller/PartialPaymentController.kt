@@ -27,10 +27,10 @@ class PartialPaymentController(
     private val partialPaymentHistoryRepository: PartialPaymentHistoryRepository
 ) {
     @GetMapping("/{id}")
-    fun get(@PathVariable id: Long) = partialPaymentRepository.findAllByOrderIdOrderByOrderIdAsc(id)
+    fun get(@PathVariable id: Long) = partialPaymentRepository.findAllByOrderIdOrderByPartialPaymentIdAsc(id)
 
     @GetMapping("/history/{id}")
-    fun getHistory(@PathVariable id: Long) = partialPaymentHistoryRepository.findAllByOrderHistoryIdOrderByOrderHistoryIdAsc(id)
+    fun getHistory(@PathVariable id: Long) = partialPaymentHistoryRepository.findAllByOrderHistoryIdOrderByPartialPaymentHistoryIdAsc(id)
 
     @PostMapping
     fun create(@RequestBody partialPayment: PartialPayment): PartialPayment {

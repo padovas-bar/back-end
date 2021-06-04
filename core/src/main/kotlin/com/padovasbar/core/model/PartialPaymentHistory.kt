@@ -3,6 +3,8 @@ package com.padovasbar.core.model
 import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.Table
@@ -29,6 +31,7 @@ data class PartialPaymentHistory(
     var paidAt: LocalDateTime?,
 
     @Column(name = "payment_type")
+    @Enumerated(value = EnumType.STRING)
     var paymentType: PaymentType?
 
     )

@@ -130,7 +130,7 @@ class OrderController(private val orderRepository: OrderRepository,
     @Transactional
     @PatchMapping("/{id}/close")
     fun closeOrder(@PathVariable id: Long, @RequestBody resume: Resume) {
-        val payments = partialPaymentRepository.findAllByOrderIdOrderByOrderIdAsc(id)
+        val payments = partialPaymentRepository.findAllByOrderIdOrderByPartialPaymentIdAsc(id)
         val items = orderItemRepository.findAllByOrderIdOrderByOrderItemIdAsc(id)
         val order = orderRepository.findById(id).get()
 
@@ -165,6 +165,7 @@ class OrderController(private val orderRepository: OrderRepository,
         val orderHistory = orderHistoryRepository.findById(id).get()
         orderHistory.status = Status.CLOSED
         orderHistory.statusChangedAt = LocalDateTime.now()
+        orderHistory.paymentType = resume.paymentType
         orderHistoryRepository.save(orderHistory)
     }
 

@@ -4,5 +4,5 @@ import com.padovasbar.core.model.PaymentType
 
 data class Resume (var total: Double?,
                    var trustedClientName: String?,
-                    var paymentType: PaymentType
+                    var paymentType: PaymentType?
 )
