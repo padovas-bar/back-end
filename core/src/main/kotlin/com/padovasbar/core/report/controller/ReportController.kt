@@ -5,6 +5,7 @@ import com.padovasbar.core.model.OrderHistory
 import com.padovasbar.core.model.PaymentType
 import com.padovasbar.core.report.dto.OutcomeDTO
 import com.padovasbar.core.report.dto.ValueSummarizedDTO
+import com.padovasbar.core.report.dto.ValueSummarizedPerHourDTO
 import com.padovasbar.core.report.repository.OutcomeRepository
 import java.time.format.DateTimeFormatter
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -44,8 +45,6 @@ class ReportController(private val outcomeRepository: OutcomeRepository) {
         val orders = outcomeRepository.outcome(since)
         val response = ValueSummarizedDTO(0.0, 0.0, 0.0)
 
-        println(orders)
-
         orders.forEach {
             when (it.paymentType) {
                 PaymentType.CASH -> response.cash += it.totalValue?:0.0
@@ -58,7 +57,17 @@ class ReportController(private val outcomeRepository: OutcomeRepository) {
         return response
     }
 
-    fun paymentTypeTranslate(paymentType: PaymentType) =
+    @GetMapping("/value-summarized-per-hour")
+    fun valueSummarizedPerHour(): ValueSummarizedPerHourDTO {
+        val orders = outcomeRepository.outcome(0)
+
+        //fazer select no banco por hora
+
+        return response
+    }
+
+
+        fun paymentTypeTranslate(paymentType: PaymentType) =
         when (paymentType) {
             PaymentType.CASH -> "Dinheiro"
             PaymentType.DEBIT_CARD -> "Cartão de débito"
