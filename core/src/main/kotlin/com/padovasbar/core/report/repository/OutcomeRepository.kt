@@ -11,9 +11,9 @@ interface OutcomeRepository : CrudRepository<OrderHistory, Long> {
     @Query(
         value = "select * from orders_history\n" +
                 "where status = 'CLOSED'\n" +
-                "and status_changed_at > trunc(sysdate) - :since\n" +
+                "and status_changed_at > to_date(:now, 'yyyy-MM-dd')  - :since\n" +
                 "order by status_changed_at",
         nativeQuery = true)
-    fun outcome(@Param("since") since: Long): MutableIterable<OrderHistory>
+    fun outcome(@Param("since") since: Long, @Param("now") now: String): MutableIterable<OrderHistory>
 
 }

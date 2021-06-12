@@ -7,6 +7,7 @@ import com.padovasbar.core.report.dto.OutcomeDTO
 import com.padovasbar.core.report.dto.ValueSummarizedDTO
 import com.padovasbar.core.report.dto.ValueSummarizedPerHourDTO
 import com.padovasbar.core.report.repository.OutcomeRepository
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,7 +22,7 @@ class ReportController(private val outcomeRepository: OutcomeRepository) {
 
     @GetMapping("/outcome")
     fun outcome(@RequestParam since: Long): MutableList<OutcomeDTO> {
-        val orders = outcomeRepository.outcome(since)
+        val orders = outcomeRepository.outcome(since, LocalDate.now().toString())
         val response = mutableListOf<OutcomeDTO>()
 
         orders
@@ -42,32 +43,23 @@ class ReportController(private val outcomeRepository: OutcomeRepository) {
 
     @GetMapping("/value-summarized")
     fun valueSummarized(@RequestParam since: Long): ValueSummarizedDTO {
-        val orders = outcomeRepository.outcome(since)
-        val response = ValueSummarizedDTO(0.0, 0.0, 0.0)
+        val orders = outcomeRepository.outcome(since, LocalDate.now().toString())
+        val response = ValueSummarizedDTO(0.0, 0.0, 0.0, 0.0)
 
         orders.forEach {
             when (it.paymentType) {
-                PaymentType.CASH -> response.cash += it.totalValue?:0.0
-                PaymentType.DEBIT_CARD -> response.debitCard += it.totalValue?:0.0
-                PaymentType.CREDIT_CARD -> response.creditCard += it.totalValue?:0.0
+                PaymentType.CASH -> response.cash += it.totalValue ?: 0.0
+                PaymentType.DEBIT_CARD -> response.debitCard += it.totalValue ?: 0.0
+                PaymentType.CREDIT_CARD -> response.creditCard += it.totalValue ?: 0.0
             }
         }
 
-        println(response)
-        return response
-    }
-
-    @GetMapping("/value-summarized-per-hour")
-    fun valueSummarizedPerHour(): ValueSummarizedPerHourDTO {
-        val orders = outcomeRepository.outcome(0)
-
-        //fazer select no banco por hora
-
+        response.total = response.cash + response.creditCard + response.debitCard
         return response
     }
 
 
-        fun paymentTypeTranslate(paymentType: PaymentType) =
+    fun paymentTypeTranslate(paymentType: PaymentType) =
         when (paymentType) {
             PaymentType.CASH -> "Dinheiro"
             PaymentType.DEBIT_CARD -> "Cartão de débito"
