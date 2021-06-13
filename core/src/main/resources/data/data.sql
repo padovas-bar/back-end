@@ -110,9 +110,8 @@ create table orders_history
     status            varchar2(20),
     status_changed_at date,
     total_value       number(10, 2),
-    pendent_owner     number(10),
-    payment_type varchar2(20),
-    CONSTRAINT pendent_owner FOREIGN KEY (pendent_owner) REFERENCES trusted_client (id_trusted_client)
+    pendent_owner     varchar2(100),
+    payment_type varchar2(20)
 );
 
 create table order_items_history
@@ -165,6 +164,19 @@ set name = '51'
 where id_product = 6;
 
 
+select a.id_order_history, a.name, a.status, a.status_changed_at, a.total_value - nvl(b.value, 0) as "TOTAL_VALUE", a.pendent_owner, a.payment_type
+from orders_history a, partial_payment_history b
+where a.status = 'CLOSED'
+  and a.id_order_history = b.id_order_history(+)
+  and a.status_changed_at > trunc(sysdate) - 7
+order by a.status_changed_at;
+
+select * from partial_payment_history
+where paid_at > trunc(sysdate) - 0
+order by paid_at;
+
+select sysdate-7 - interval '3' hour from dual
+
 -- botao onde o cliente paga 1 valor e ele vai amortizado as ultimas comnandas
 -- OK Marcar se o pagamento foi feito com CC ou dinheiro
 
@@ -179,3 +191,4 @@ where id_product = 6;
 --Criar relatorio de gastos dos dias anteiores.
 -- OK Deletar em cascata (add mensagem on error. categoria > produto. produto > comanda)
 --Comanda precisa ter um campo livre / alguma forma de inserir desconto
+

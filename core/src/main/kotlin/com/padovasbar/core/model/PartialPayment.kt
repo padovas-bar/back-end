@@ -22,7 +22,7 @@ data class PartialPayment(
     val orderId: Long?,
 
     @Column(name = "description")
-    val description: String?,
+    var description: String?,
 
     @Column(name = "value", nullable = false)
     val value: Double,

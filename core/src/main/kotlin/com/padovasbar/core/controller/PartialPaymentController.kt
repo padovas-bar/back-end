@@ -35,6 +35,9 @@ class PartialPaymentController(
     @PostMapping
     fun create(@RequestBody partialPayment: PartialPayment): PartialPayment {
         partialPayment.paidAt = LocalDateTime.now()
+        if(partialPayment.description.isNullOrEmpty()) partialPayment.description = "Pagamento parcial"
+
+        println(partialPayment.description)
         return partialPaymentRepository.save(partialPayment)
     }
 

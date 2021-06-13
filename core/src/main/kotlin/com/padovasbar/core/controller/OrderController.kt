@@ -157,7 +157,9 @@ class OrderController(private val orderRepository: OrderRepository,
 
         partialPaymentRepository.deleteAllByOrderId(id)
         orderItemRepository.deleteAllByOrderId(id)
+        println("1")
         orderRepository.deleteById(id)
+        println("2")
     }
 
     @PatchMapping("/{id}/close/history")
