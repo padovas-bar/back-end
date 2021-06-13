@@ -89,6 +89,20 @@ create table partial_payment
     CONSTRAINT fk_order_2 FOREIGN KEY (id_order) REFERENCES orders (id_order)
 );
 
+
+CREATE SEQUENCE seq_trusted_client
+    MINVALUE 1
+    MAXVALUE 999999999999
+    START WITH 1
+    INCREMENT BY 1;
+
+create table trusted_client
+(
+    id_trusted_client number(10) primary key,
+    name               varchar2(100),
+    description        varchar2(1000)
+);
+
 create table orders_history
 (
     id_order_history  number(10) primary key,
@@ -123,19 +137,6 @@ create table partial_payment_history
     CONSTRAINT fk_order_history_2 FOREIGN KEY (id_order_history) REFERENCES orders_history (id_order_history)
 );
 
-CREATE SEQUENCE seq_trusted_client
-    MINVALUE 1
-    MAXVALUE 999999999999
-    START WITH 1
-    INCREMENT BY 1;
-
-create table trusted_client
-(
-    id_trusted_client number(10) primary key,
-    name               varchar2(100),
-    description        varchar2(1000)
-);
-d
 insert into orders
 values (seq_order.nextval, 'mesa do careca', 'OPEN', sysdate);
 insert into order_items
