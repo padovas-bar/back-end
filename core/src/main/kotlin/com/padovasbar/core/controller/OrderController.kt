@@ -40,8 +40,7 @@ class OrderController(private val orderRepository: OrderRepository,
                       private val orderHistoryRepository: OrderHistoryRepository,
                       private val orderItemHistoryRepository: OrderItemHistoryRepository,
                       private val partialPaymentRepository: PartialPaymentRepository,
-                      private val partialPaymentHistoryRepository: PartialPaymentHistoryRepository,
-                      private val trustedClientRepository: TrustedClientRepository
+                      private val partialPaymentHistoryRepository: PartialPaymentHistoryRepository
 ) {
 
     @PostMapping
@@ -157,9 +156,7 @@ class OrderController(private val orderRepository: OrderRepository,
 
         partialPaymentRepository.deleteAllByOrderId(id)
         orderItemRepository.deleteAllByOrderId(id)
-        println("1")
         orderRepository.deleteById(id)
-        println("2")
     }
 
     @PatchMapping("/{id}/close/history")
@@ -182,10 +179,8 @@ class OrderController(private val orderRepository: OrderRepository,
         }
 
         for(order in response){
-            var partialPaymentValue = 0.0
-            val partialPayments =
-                partialPaymentHistoryRepository.findAllByOrderHistoryId(order.orderHistoryId!!)
-                    .forEach { a-> partialPaymentValue += a.value }
+            val partialPaymentValue = 0.0
+
             order.partialPaidValue = partialPaymentValue
             order.totalValue = order.totalValue
             order.remainingValue = order.totalValue?.minus(order.partialPaidValue?:0.0)

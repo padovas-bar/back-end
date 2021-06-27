@@ -37,7 +37,6 @@ class PartialPaymentController(
         partialPayment.paidAt = LocalDateTime.now()
         if(partialPayment.description.isNullOrEmpty()) partialPayment.description = "Pagamento parcial"
 
-        println(partialPayment.description)
         return partialPaymentRepository.save(partialPayment)
     }
 
