@@ -1,0 +1,10 @@
+mkdir backup-padovas-bar
+mkdir backup-padovas-bar/category
+mkdir backup-padovas-bar/order
+mkdir backup-padovas-bar/order_history
+mkdir backup-padovas-bar/order_item
+mkdir backup-padovas-bar/order_item_history
+mkdir backup-padovas-bar/partial_payment
+mkdir backup-padovas-bar/partial_payment_history
+mkdir backup-padovas-bar/product
+mkdir backup-padovas-bar/trusted_client
