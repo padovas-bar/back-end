@@ -1,14 +1,10 @@
 package com.padovasbar.core.report.controller
 
-import com.padovasbar.core.dto.PendentOrderResponseDTO
-import com.padovasbar.core.model.OrderHistory
 import com.padovasbar.core.model.PaymentType
 import com.padovasbar.core.report.dto.OutcomeDTO
 import com.padovasbar.core.report.dto.ValueSummarizedDTO
-import com.padovasbar.core.report.dto.ValueSummarizedPerHourDTO
 import com.padovasbar.core.report.repository.OutcomePartialPaymentRepository
 import com.padovasbar.core.report.repository.OutcomeRepository
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
@@ -85,6 +81,13 @@ class ReportController(
 
         response.total = response.cash + response.creditCard + response.debitCard
         return response
+    }
+
+    @GetMapping("/total-per-day")
+    fun totalPerDay(@RequestParam since: Long): MutableIterable<OutcomeRepository.Sum> {
+
+        return outcomeRepository.outcomeFromDay(since)
+
     }
 
 
