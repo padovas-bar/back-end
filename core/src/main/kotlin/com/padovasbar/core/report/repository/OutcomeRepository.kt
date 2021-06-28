@@ -25,7 +25,7 @@ interface OutcomeRepository : CrudRepository<OrderHistory, Long> {
                 "from orders_history a, partial_payment_history b\n" +
                 "where a.status = 'CLOSED'\n" +
                 "and a.id_order_history = b.id_order_history(+)\n" +
-                "and trunc(a.status_changed_at) >= trunc(sysdate - interval '3' hour) - 16\n" +
+                "and trunc(a.status_changed_at) >= trunc(sysdate - interval '3' hour) - :since\n" +
                 "group by trunc(a.status_changed_at)\n" +
                 "union all\n" +
                 "select trunc(paid_at) day, sum(value) total_value from partial_payment_history\n" +

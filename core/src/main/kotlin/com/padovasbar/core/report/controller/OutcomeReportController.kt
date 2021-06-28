@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @CrossOrigin
 @RequestMapping("/report")
-class ReportController(
+class OutcomeReportController(
     private val outcomeRepository: OutcomeRepository,
     private val outcomePartialPaymentRepository: OutcomePartialPaymentRepository
 ) {
