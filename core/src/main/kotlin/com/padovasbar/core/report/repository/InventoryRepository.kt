@@ -16,4 +16,18 @@ interface InventoryRepository : CrudRepository<OrderItemsHistory, Long> {
         nativeQuery = true)
     fun inventory(@Param("since") since: Long): MutableIterable<OrderItemsHistory>
 
+    @Query(
+        value = "select * from(\n" +
+                "select name, sum(quantity) total\n" +
+                "from order_items_history\n" +
+                "where trunc(item_ordered_at) >= trunc(sysdate - interval '3' hour) - :since\n" +
+                "group by name)\n" +
+                "where ROWNUM <= 10",
+        nativeQuery = true)
+    fun rank(@Param("since") since: Long): MutableIterable<Rank>
+
+    interface Rank{
+        fun getName(): String
+        fun getTotal(): Long
+    }
 }

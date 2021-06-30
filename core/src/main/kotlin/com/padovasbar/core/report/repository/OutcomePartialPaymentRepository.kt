@@ -15,4 +15,5 @@ interface OutcomePartialPaymentRepository : CrudRepository<PartialPaymentHistory
     )
     fun outcomePartialPayments(@Param("since") since: Long) : MutableIterable<PartialPaymentHistory>
 
+
 }

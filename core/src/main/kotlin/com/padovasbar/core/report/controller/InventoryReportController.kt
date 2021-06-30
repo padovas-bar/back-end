@@ -1,7 +1,7 @@
 package com.padovasbar.core.report.controller
 
-import com.padovasbar.core.model.OrderItemsHistory
 import com.padovasbar.core.report.dto.InventoryDTO
+import com.padovasbar.core.report.dto.RankDTO
 import com.padovasbar.core.report.repository.InventoryRepository
 import java.time.format.DateTimeFormatter
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -18,7 +18,7 @@ class InventoryReportController(
 ) {
 
     @GetMapping("/inventory")
-    fun outcome(@RequestParam since: Long): MutableList<InventoryDTO> {
+    fun inventory(@RequestParam since: Long): MutableList<InventoryDTO> {
         val inventory = inventoryRepository.inventory(since)
         val items = mutableListOf<InventoryDTO>()
 
@@ -34,6 +34,17 @@ class InventoryReportController(
         }
 
         return items
+    }
+
+    @GetMapping("/inventory/product-rank")
+    fun productRank(@RequestParam since: Long): MutableList<RankDTO> {
+        val rank = inventoryRepository.rank(since)
+        val response = mutableListOf<RankDTO>()
+        rank.forEach {
+            response.add(RankDTO(it.getName(), it.getTotal()))
+        }
+
+        return response
     }
 
 }
