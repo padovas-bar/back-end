@@ -20,7 +20,7 @@ interface OutcomeRepository : CrudRepository<OrderHistory, Long> {
     fun outcome(@Param("since") since: Long): MutableIterable<OrderHistory>
 
     @Query(
-        value = "select to_char(day, 'dd/MM/yyyy') day, sum(total_value) as value from\n" +
+        value = "select to_char(day, 'dd/MM/yyyy') || to_char(day, ' DY') day, sum(total_value) as value from\n" +
                 "(select trunc(a.status_changed_at) day, sum(a.total_value - nvl(b.value, 0)) as total_value\n" +
                 "from orders_history a, partial_payment_history b\n" +
                 "where a.status = 'CLOSED'\n" +
