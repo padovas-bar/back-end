@@ -29,7 +29,7 @@ class BackupScheduler(private val orderRepository: OrderRepository,
                       private val trustedClientRepository: TrustedClientRepository
 ) {
 
-    private val prefix = "/home/bpadovese/repos/github/padovas-bar/back-end/backup-padovas-bar"
+    private val prefix = "/home/padova/padovas-bar/backup-padovas-bar"
     private val suffix = "backup-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm")) + ".csv"
 
     @Scheduled(fixedRate = 21600000) //21600000 = 6h
