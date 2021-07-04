@@ -22,7 +22,7 @@ interface InventoryRepository : CrudRepository<OrderItemsHistory, Long> {
                 "from order_items_history\n" +
                 "where trunc(item_ordered_at) >= trunc(sysdate - interval '3' hour) - :since\n" +
                 "group by name \n" +
-                "order by 2) \n" +
+                "order by 2 desc) \n" +
                 "where ROWNUM <= 10",
         nativeQuery = true)
     fun rank(@Param("since") since: Long): MutableIterable<Rank>
