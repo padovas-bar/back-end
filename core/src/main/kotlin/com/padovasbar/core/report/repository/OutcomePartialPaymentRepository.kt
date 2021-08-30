@@ -10,7 +10,7 @@ interface OutcomePartialPaymentRepository : CrudRepository<PartialPaymentHistory
     @Query(
         value = "select * from partial_payment_history\n" +
                 "where paid_at > trunc(sysdate - interval '3' hour) - :since\n" +
-                "order by paid_at",
+                "order by paid_at desc",
         nativeQuery = true
     )
     fun outcomePartialPayments(@Param("since") since: Long) : MutableIterable<PartialPaymentHistory>

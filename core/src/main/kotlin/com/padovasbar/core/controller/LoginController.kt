@@ -14,12 +14,9 @@ import org.springframework.web.bind.annotation.RestController
 class LoginController(private val loginRepository: LoginRepository) {
 
     @GetMapping("/valid-session")
-    fun getById(): Boolean {
-        println("data no banco: " + loginRepository.findById(1).get().lastLoginAt)
-        println("data agora: " + LocalDateTime.now().minusMinutes(5))
-        println("resultado: " + (loginRepository.findById(1).get().lastLoginAt > LocalDateTime.now().minusMinutes(5)))
-       return loginRepository.findById(1).get().lastLoginAt > LocalDateTime.now().minusMinutes(5)
-    }
+    fun getById() =
+        loginRepository.findById(1).get().lastLoginAt > LocalDateTime.now().minusMinutes(5)
+    
 
     @GetMapping("/validate/{password}")
     fun validatePassword(@PathVariable password: String) : Boolean {

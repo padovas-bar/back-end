@@ -32,6 +32,7 @@ class OutcomeReportController(
                         it.orderHistoryId,
                         it.name,
                         it.statusChangedAt!!.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                        it.statusChangedAt!!,
                         it.totalValue!!,
                         paymentTypeTranslate(it.paymentType!!)
                     )
@@ -47,12 +48,14 @@ class OutcomeReportController(
                         it.orderHistoryId,
                         it.description,
                         it.paidAt!!.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                        it.paidAt!!,
                         it.value,
                         paymentTypeTranslate(it.paymentType!!)
                     )
                 )
             }
 
+        response.sortByDescending { it.originalStatusChangedAt }
         return response
     }
 
@@ -85,9 +88,7 @@ class OutcomeReportController(
 
     @GetMapping("/total-per-day")
     fun totalPerDay(@RequestParam since: Long): MutableIterable<OutcomeRepository.Sum> {
-
         return outcomeRepository.outcomeFromDay(since)
-
     }
 
 

@@ -15,12 +15,12 @@ interface OutcomeRepository : CrudRepository<OrderHistory, Long> {
                 "where a.status = 'CLOSED'\n" +
                 "and a.id_order_history = b.id_order_history(+)\n" +
                 "and a.status_changed_at > trunc(sysdate - interval '3' hour) - :since\n" +
-                "order by a.status_changed_at",
+                "order by a.status_changed_at desc",
         nativeQuery = true)
     fun outcome(@Param("since") since: Long): MutableIterable<OrderHistory>
 
     @Query(
-        value = "select to_char(day, 'dd/MM/yyyy') || to_char(day, ' DY') day, sum(total_value) as value from\n" +
+        value = "select to_char(day, 'dd/MM/yyyy') || to_char(day, ' DY') day, sum(total_value) as value, day as original from\n" +
                 "(select trunc(a.status_changed_at) day, sum(a.total_value - nvl(b.value, 0)) as total_value\n" +
                 "from orders_history a, partial_payment_history b\n" +
                 "where a.status = 'CLOSED'\n" +
@@ -32,13 +32,14 @@ interface OutcomeRepository : CrudRepository<OrderHistory, Long> {
                 "where trunc(paid_at) >= trunc(sysdate - interval '3' hour) - :since\n" +
                 "group by trunc(paid_at))\n" +
                 "group by day\n" +
-                "order by 1",
+                "order by 3",
         nativeQuery = true)
     fun outcomeFromDay(@Param("since") since: Long): MutableIterable<Sum>
 
     interface Sum{
         fun getDay(): String
         fun getValue(): Double
+        fun getOriginal(): LocalDateTime
     }
 
 }
