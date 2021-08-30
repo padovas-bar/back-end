@@ -12,7 +12,8 @@ import org.springframework.stereotype.Repository
 interface InventoryRepository : CrudRepository<OrderItemsHistory, Long> {
     @Query(
         value = "select * from order_items_history \n" +
-                "where item_ordered_at > trunc(sysdate - interval '3' hour) - :since",
+                "where item_ordered_at > trunc(sysdate - interval '3' hour) - :since\n" +
+                "order by item_ordered_at desc",
         nativeQuery = true)
     fun inventory(@Param("since") since: Long): MutableIterable<OrderItemsHistory>
 
