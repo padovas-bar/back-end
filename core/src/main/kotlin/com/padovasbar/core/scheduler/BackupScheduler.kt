@@ -29,27 +29,27 @@ class BackupScheduler(private val orderRepository: OrderRepository,
                       private val trustedClientRepository: TrustedClientRepository
 ) {
 
-    private val prefix = "/home/padova/padovas-bar/backup-padovas-bar"
-    private val suffix = "backup-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm")) + ".csv"
+    private val prefix = "/home/bpadovese/padovas-bar/backup-padovas-bar"
 
     @Scheduled(fixedRate = 21600000) //21600000 = 6h
     fun backup(){
         println("Iniciando backup de dados as " + LocalDateTime.now())
+        val suffix = "backup-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm")) + ".csv"
 
-        makeCategoryCsv()
-        makeProductCsv()
-        makeOrderCsv()
-        makeOrderItemCsv()
-        makePartialPaymentCsv()
-        makeOrderHistoryCsv()
-        makeOrderItemHistoryCsv()
-        makePartialPaymentHistoryCsv()
-        makeTrustedClientCsv()
+        makeCategoryCsv(suffix)
+        makeProductCsv(suffix)
+        makeOrderCsv(suffix)
+        makeOrderItemCsv(suffix)
+        makePartialPaymentCsv(suffix)
+        makeOrderHistoryCsv(suffix)
+        makeOrderItemHistoryCsv(suffix)
+        makePartialPaymentHistoryCsv(suffix)
+        makeTrustedClientCsv(suffix)
 
         println("Backup de dados finalizado as " + LocalDateTime.now())
     }
 
-    fun makeTrustedClientCsv(){
+    fun makeTrustedClientCsv(suffix: String){
         val fileWriter = FileWriter("$prefix/trusted_client/trusted_client-$suffix")
         val csvWriter = CSVWriter(fileWriter)
 
@@ -69,7 +69,7 @@ class BackupScheduler(private val orderRepository: OrderRepository,
         csvWriter.close()
     }
 
-    fun makePartialPaymentHistoryCsv(){
+    fun makePartialPaymentHistoryCsv(suffix: String){
         val fileWriter = FileWriter("$prefix/partial_payment_history/partial_payment_history-$suffix")
         val csvWriter = CSVWriter(fileWriter)
 
@@ -92,7 +92,7 @@ class BackupScheduler(private val orderRepository: OrderRepository,
         csvWriter.close()
     }
 
-    fun makeOrderItemHistoryCsv(){
+    fun makeOrderItemHistoryCsv(suffix: String){
         val fileWriter = FileWriter("$prefix/order_item_history/order_item_history-$suffix")
         val csvWriter = CSVWriter(fileWriter)
 
@@ -115,7 +115,7 @@ class BackupScheduler(private val orderRepository: OrderRepository,
         csvWriter.close()
     }
 
-    fun makeOrderHistoryCsv(){
+    fun makeOrderHistoryCsv(suffix: String){
         val fileWriter = FileWriter("$prefix/order_history/order_history-$suffix")
         val csvWriter = CSVWriter(fileWriter)
 
@@ -139,7 +139,7 @@ class BackupScheduler(private val orderRepository: OrderRepository,
         csvWriter.close()
     }
 
-    fun makePartialPaymentCsv(){
+    fun makePartialPaymentCsv(suffix: String){
         val fileWriter = FileWriter("$prefix/partial_payment/partial_payment-$suffix")
         val csvWriter = CSVWriter(fileWriter)
 
@@ -162,7 +162,7 @@ class BackupScheduler(private val orderRepository: OrderRepository,
         csvWriter.close()
     }
 
-    fun makeOrderItemCsv(){
+    fun makeOrderItemCsv(suffix: String){
         val fileWriter = FileWriter("$prefix/order_item/order_item-$suffix")
         val csvWriter = CSVWriter(fileWriter)
 
@@ -184,7 +184,7 @@ class BackupScheduler(private val orderRepository: OrderRepository,
         csvWriter.close()
     }
 
-    fun makeProductCsv(){
+    fun makeProductCsv(suffix: String){
         val fileWriter = FileWriter("$prefix/product/product-$suffix")
         val csvWriter = CSVWriter(fileWriter)
 
@@ -205,7 +205,7 @@ class BackupScheduler(private val orderRepository: OrderRepository,
         csvWriter.close()
     }
 
-    fun makeCategoryCsv(){
+    fun makeCategoryCsv(suffix: String){
         val fileWriter = FileWriter("$prefix/category/category-$suffix")
         val csvWriter = CSVWriter(fileWriter)
 
@@ -224,7 +224,7 @@ class BackupScheduler(private val orderRepository: OrderRepository,
         csvWriter.close()
     }
 
-    fun makeOrderCsv(){
+    fun makeOrderCsv(suffix: String){
         val fileWriter = FileWriter("$prefix/order/order-$suffix")
         val csvWriter = CSVWriter(fileWriter)
 

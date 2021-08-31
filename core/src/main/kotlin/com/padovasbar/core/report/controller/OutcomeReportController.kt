@@ -34,7 +34,7 @@ class OutcomeReportController(
                         it.statusChangedAt!!.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                         it.statusChangedAt!!,
                         it.totalValue!!,
-                        paymentTypeTranslate(it.paymentType!!)
+                        paymentTypeTranslate(it.paymentType)
                     )
                 )
             }
@@ -50,7 +50,7 @@ class OutcomeReportController(
                         it.paidAt!!.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                         it.paidAt!!,
                         it.value,
-                        paymentTypeTranslate(it.paymentType!!)
+                        paymentTypeTranslate(it.paymentType)
                     )
                 )
             }
@@ -92,11 +92,15 @@ class OutcomeReportController(
     }
 
 
-    fun paymentTypeTranslate(paymentType: PaymentType) =
-        when (paymentType) {
-            PaymentType.CASH -> "Dinheiro"
-            PaymentType.DEBIT_CARD -> "Cartão de débito"
-            PaymentType.CREDIT_CARD -> "Cartão de crédito"
+    fun paymentTypeTranslate(paymentType: PaymentType?) =
+        if(paymentType == null){
+            "Não informado"
+        } else {
+            when (paymentType) {
+                PaymentType.CASH -> "Dinheiro"
+                PaymentType.DEBIT_CARD -> "Cartão de débito"
+                PaymentType.CREDIT_CARD -> "Cartão de crédito"
+            }
         }
 
 
