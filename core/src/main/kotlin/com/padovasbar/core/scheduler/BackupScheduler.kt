@@ -29,7 +29,7 @@ class BackupScheduler(private val orderRepository: OrderRepository,
                       private val trustedClientRepository: TrustedClientRepository
 ) {
 
-    private val prefix = "/home/bpadovese/padovas-bar/backup-padovas-bar"
+    private val prefix = "/home/padova/padovas-bar/backup-padovas-bar"
 
     @Scheduled(fixedRate = 21600000) //21600000 = 6h
     fun backup(){
