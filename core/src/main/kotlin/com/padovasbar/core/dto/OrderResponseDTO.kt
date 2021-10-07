@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class OrderResponseDTO (
     val orderId: Long,
-    val name: String,
+    val name: String?,
     val status: Status,
     val statusChangedAt: LocalDateTime,
     var orderItems: List<OrderItemsResponseDTO>?
